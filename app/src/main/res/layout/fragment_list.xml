@@ -15,6 +15,16 @@
             android:id="@+id/textView2"
             android:textSize="30sp"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/textView2"
+            android:layout_above="@id/btnGoToNew"
+    >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <Button
             android:text="@string/btnGoToAdd"
             android:layout_width="match_parent"

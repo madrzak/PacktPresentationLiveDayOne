@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_new_item.*
 
 
@@ -15,6 +16,16 @@ import kotlinx.android.synthetic.main.fragment_new_item.*
  *
  */
 class NewItemFragment : Fragment() {
+
+    private lateinit var mViewModel: NewItemViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this).get(NewItemViewModel(activity!!.application)::class.java)
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +53,9 @@ class NewItemFragment : Fragment() {
 
                 Toast.makeText(context, "Input too short...", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-
             }
+
+            mViewModel.storeItem(input)
 
             Toast.makeText(context, "${input.capitalize()} entered", Toast.LENGTH_SHORT).show()
 

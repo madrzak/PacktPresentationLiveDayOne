@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_list.*
 
 /**
@@ -13,6 +16,23 @@ import kotlinx.android.synthetic.main.fragment_list.*
  *
  */
 class ListFragment : Fragment() {
+
+    private lateinit var mViewModel: NewItemViewModel
+
+    private lateinit var listAdapter: ItemRecyclerAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this).get(NewItemViewModel(activity!!.application)::class.java)
+
+        mViewModel.allItems.observe(this, Observer {
+
+            listAdapter.setData(it)
+
+        })
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,10 +48,19 @@ class ListFragment : Fragment() {
 
 
         btnGoToNew.setOnClickListener {
-
             (activity as? MainActivity)?.goToNewItemFragment()
         }
 
+        listAdapter = ItemRecyclerAdapter()
+        rvList.layoutManager = LinearLayoutManager(activity)
+        rvList.adapter = listAdapter
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        mViewModel.retrieveItems()
     }
 
 
